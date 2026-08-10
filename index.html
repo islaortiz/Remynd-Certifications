@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remynd Certifications — Knowledge Base</title>
+  <meta name="description" content="Open knowledge base of tech certification resources shared by Remynd employees. Cheatsheets, mock exams and study material.">
+  <link rel="icon" type="image/png" href="images/small_logo_remynd.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <img class="brand-logo-mark" src="images/logo_remynd.svg" alt="Remynd">
+      </div>
+      <span class="topbar-tag">Certifications · Knowledge Base</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <h1>The Remynd Certification Knowledge Base</h1>
+      <p>A place for Remynd employees to prepare for tech certifications — cheatsheets, mock exams and study notes, all shared by colleagues who passed the exam before you.</p>
+      <p>It's <strong>open-source</strong>: anyone at Remynd can add material when they pass a new certification.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <!-- Disclaimer -->
+    <div class="notice">
+      <strong>Heads up:</strong> materials here are made by colleagues and are <strong>NOT official sources</strong>.
+      They are study aids only — always double-check against the relevant vendor's official
+      documentation and exam guides. No guarantee of accuracy or exam success.
+    </div>
+  </div>
+
+  <!-- Certifications -->
+  <section class="section wrap" id="certs">
+    <h2>Available certifications</h2>
+    <p class="sub">Pick a certification to see its resources. Passed one that isn't listed? <a href="#contribute">Add it.</a></p>
+
+    <div class="cert-grid">
+
+      <a class="cert-card" href="PL300/index.html">
+        <span class="cert-tag">PL-300</span>
+        <h3>Microsoft Power BI Data Analyst</h3>
+        <p class="who">For: aspiring / working data analysts</p>
+        <p>Certifies you can prepare, model and visualize data in Power BI: connecting to data sources, cleaning and transforming with Power Query, building data models and DAX measures, designing reports and dashboards, and managing workspaces.</p>
+        <span class="go">View resources →</span>
+      </a>
+
+      <a class="cert-card" href="DP900/index.html">
+        <span class="cert-tag">DP-900</span>
+        <h3>Microsoft Azure Data Fundamentals</h3>
+        <p class="who">For: anyone starting with data on Azure</p>
+        <p>Certifies foundational knowledge of core data concepts and how they map to Azure services: relational vs. non-relational data, analytics workloads, and the roles, tools and services used for data in the Microsoft cloud.</p>
+        <span class="go">View resources →</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Contribute -->
+  <section class="section wrap" id="contribute">
+    <h2>Contribute your own material</h2>
+    <p class="sub">Just passed a certification? Share what helped you.</p>
+    <div class="cert-card" style="max-width:760px;">
+      <ol style="margin:0; padding-left:20px; color:var(--ink-soft);">
+        <li>Create a folder named after the certification (e.g. <code>AZ900</code>).</li>
+        <li>Drop your resources inside (cheatsheets, mock exams, notes — HTML / PDF / etc.).</li>
+        <li>Copy an existing <code>index.html</code> from <code>PL300/</code> or <code>DP900/</code> and edit it for your certification.</li>
+        <li>Add a card for your certification on this landing page.</li>
+        <li>Open a pull request. See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> for details.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="wrap">
+      <img src="images/logo_remynd.svg" alt="Remynd">
+      <span>Open knowledge base · Unofficial study material · Built by Remynd employees</span>
+    </div>
+  </footer>
+
+</body>
+</html>

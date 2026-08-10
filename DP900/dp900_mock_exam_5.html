@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DP-900 Mock Exam</title>
+<style>
+  :root {
+    --bg: #F0F5FF;
+    --card: #FFFFFF;
+    --text: #1B2040;
+    --muted: #5A6A8A;
+    --border: #D6E3FF;
+    --d1: #0078D4;
+    --d2: #107C41;
+    --d3: #5C2D91;
+    --d4: #CA5010;
+    --yes: #107C41;
+    --no: #D13438;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    padding-bottom: 110px;
+  }
+  .header {
+    background: linear-gradient(135deg, #0A1628 0%, #0F2D5E 100%);
+    color: white;
+    padding: 28px 20px 22px;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
+  .header p { color: #90AFDD; font-size: 0.88rem; margin-top: 6px; }
+  .domain-badges {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-top: 16px;
+  }
+  .badge {
+    padding: 5px 12px; border-radius: 20px; font-size: 0.76rem;
+    font-weight: 600; color: white; white-space: nowrap;
+  }
+  .badge-d1 { background: var(--d1); }
+  .badge-d2 { background: var(--d2); }
+  .badge-d3 { background: var(--d3); }
+  .badge-d4 { background: var(--d4); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
+
+  #results {
+    display: none;
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 22px;
+    margin-bottom: 22px;
+    border: 1px solid var(--border);
+  }
+  #results h2 { font-size: 1.3rem; margin-bottom: 4px; }
+  #results .scoreBig { font-size: 2.6rem; font-weight: 800; margin: 6px 0 14px; }
+  .scoreBig.pass { color: var(--yes); }
+  .scoreBig.fail { color: var(--no); }
+  .domainRow {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem;
+  }
+  .domainRow:last-child { border-bottom: none; }
+  .domainRow .dName { display: flex; align-items: center; gap: 8px; font-weight: 600;}
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot-d1 { background: var(--d1); }
+  .dot-d2 { background: var(--d2); }
+  .dot-d3 { background: var(--d3); }
+  .dot-d4 { background: var(--d4); }
+
+  .qcard {
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 18px 18px 14px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    scroll-margin-top: 16px;
+  }
+  .qcard.unanswered-flag { border-color: var(--no); box-shadow: 0 0 0 2px rgba(209,52,56,0.25); }
+  .qmeta {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .qnum { font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+  .qdomain {
+    font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 12px;
+    color: white;
+  }
+  .qstem { font-size: 0.98rem; font-weight: 600; margin-bottom: 6px; white-space: pre-line; }
+  .qhint { font-size: 0.78rem; color: var(--muted); font-weight: 600; margin-bottom: 10px; font-style: italic; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 9px; border: 1.5px solid var(--border);
+    cursor: pointer; font-size: 0.92rem; transition: border-color .12s, background .12s;
+  }
+  .option:hover { border-color: #A9C6FF; background: #F6F9FF; }
+  .option input { accent-color: #0078D4; width: 16px; height: 16px; flex-shrink: 0; }
+  .option.selected { border-color: #0078D4; background: #EAF3FF; }
+
+  .option.correct-answer { border-color: var(--yes); background: #E9F7EF; }
+  .option.wrong-answer { border-color: var(--no); background: #FCEAEA; }
+  .option.missed-answer { border-color: var(--yes); background: #F3FBF6; border-style: dashed; }
+  .resultTag {
+    margin-left: auto; font-size: 0.72rem; font-weight: 700;
+  }
+  .resultTag.correct { color: var(--yes); }
+  .resultTag.wrong { color: var(--no); }
+
+  .footerBar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white; border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    padding: 12px 16px; display: flex; align-items: center; gap: 14px;
+    justify-content: space-between; z-index: 50;
+  }
+  .progressWrap { flex: 1; }
+  .progressText { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+  .progressBar { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progressFill { height: 100%; background: linear-gradient(90deg,#0078D4,#5C2D91); width:0%; transition: width .2s; }
+  .btn {
+    background: linear-gradient(135deg,#0078D4,#0A1628);
+    color: white; border: none; padding: 12px 22px; border-radius: 10px;
+    font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap;
+  }
+  .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .warnMsg { color: var(--no); font-size: 0.82rem; font-weight: 600; margin-top: 6px; display:none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>DP-900 Mock Exam</h1>
+  <p>40 questions &middot; weighted to the official exam blueprint</p>
+  <div class="domain-badges">
+    <span class="badge badge-d1">Core Data Concepts &middot; 25%</span>
+    <span class="badge badge-d2">Relational Data &middot; 25%</span>
+    <span class="badge badge-d3">Non-Relational Data &middot; 20%</span>
+    <span class="badge badge-d4">Analytics Workloads &middot; 30%</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div id="results"></div>
+
+  <div id="questions"></div>
+
+</div>
+
+<div class="footerBar">
+  <div class="progressWrap">
+    <div class="progressText" id="progressText">0 / 40 answered</div>
+    <div class="progressBar"><div class="progressFill" id="progressFill"></div></div>
+    <div class="warnMsg" id="warnMsg">Answer every question before submitting.</div>
+  </div>
+  <button class="btn" id="submitBtn">Submit Exam</button>
+</div>
+
+<script>
+const EXAM = [{"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "In Azure Data Factory, which type of activity is a 'Lookup' activity classified as?", "options": ["Control", "Data movement", "Orchestration", "Data transformation"], "correctIndices": [0], "multi": false}, {"domain": 3, "domainName": "Non-Relational Data on Azure", "stem": "What is required to provision Azure Data Lake Storage in an Azure Storage account?", "options": ["Versioning must be disabled.", "Versioning must be enabled.", "Hierarchical namespace must be enabled.", "Hierarchical namespace must be disabled."], "correctIndices": [2], "multi": false}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "Complete the sentence: Relational databases are commonly used to store and query ___", "options": ["semi-structured data.", "unstructured data.", "blobs.", "structured data."], "correctIndices": [3], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "You need to create an Azure Storage account. Data in the account must replicate outside the Azure region automatically. Which two types of replication can you use? (Select two.)", "options": ["geo-redundant storage (GRS)", "zone-redundant storage (ZRS)", "read-access geo-redundant storage (RA-GRS)", "locally-redundant storage (LRS)"], "correctIndices": [0, 2], "multi": true}, {"domain": 3, "domainName": "Non-Relational Data on Azure", "stem": "You have an Azure Cosmos DB account that uses the Core (SQL) API. When provisioning a container, which two settings must you specify? (Select two.)", "options": ["the API", "the partition key", "the throughput", "the read region"], "correctIndices": [1, 2], "multi": true}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "Which T-SQL clause causes a database management system to use an index instead of performing a full table scan?", "options": ["JOIN", "SELECT", "ORDER BY", "WHERE"], "correctIndices": [3], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "You have a banking application that transfers money in to and out of accounts. Of which type of solution is this an example?", "options": ["online analytical processing (OLAP)", "extract, transform, and load (ETL)", "a data warehouse", "online transaction processing (OLTP)"], "correctIndices": [3], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "A visualization that shows a university's current student enrollment versus the maximum capacity is an example of which type of analytics?", "options": ["descriptive", "prescriptive", "cognitive", "predictive"], "correctIndices": [0], "multi": false}, {"domain": 3, "domainName": "Non-Relational Data on Azure", "stem": "In an Azure Storage account, where are blobs stored?", "options": ["In a container", "In a resource group", "Directly at the account root", "In a partition"], "correctIndices": [0], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Which of the following is true regarding connecting to external resources in Microsoft Power BI?", "options": ["You can only connect to external resources with Power BI Desktop, not the service.", "Power BI cannot connect to any external resources.", "You can connect to external resources using both Power BI Desktop and the Power BI service.", "External resources can only be accessed through the Power BI phone app."], "correctIndices": [2], "multi": false}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "Complete the sentence: An extract, transform, and load (ETL) process requires ___", "options": ["a matching schema in the data source and the data target.", "a target data store powerful enough to transform data.", "that the data target be a relational database.", "data that is fully processed before being loaded to the target data store."], "correctIndices": [3], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "Which of the following is a task typically performed by a data engineer?", "options": ["Identifying data governance rules", "Approving company budgets", "Creating data ingestion pipelines", "Designing marketing dashboards for executives"], "correctIndices": [2], "multi": false}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "Which Azure security feature can be used with Azure SQL Database to detect potential threats?", "options": ["Network Security Groups only", "Azure Advanced Threat Protection (ATP)", "Azure Firewall Manager", "Azure Bastion"], "correctIndices": [1], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "What is a benefit of platform as a service (PaaS) database offerings in Azure?", "options": ["No need for performance tuning", "Full control over the operating system", "Unlimited free storage", "Reduced administrative overhead for managing hardware"], "correctIndices": [3], "multi": false}, {"domain": 3, "domainName": "Non-Relational Data on Azure", "stem": "Which of the following are valid outputs for batch processing? (Select three.)", "options": ["a relational database", "a NoSQL database", "a file store", "a message queue only"], "correctIndices": [0, 1, 2], "multi": true}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Which job role is typically responsible for creating a chart that shows sales transactions by week?", "options": ["Database administrator", "Data analyst", "Data engineer", "Solutions architect"], "correctIndices": [1], "multi": false}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "Which of the following is true about Azure Data Studio?", "options": ["It requires a Microsoft 365 subscription to install.", "It only runs on Windows.", "It cannot be used to restore a database.", "It can be used to query an Azure SQL database from a device running macOS."], "correctIndices": [3], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "Complete the sentence: The ___ file format uses a hierarchical document schema to define data entities that have multiple attributes.", "options": ["JSON", "CSV", "TSV", "ORC"], "correctIndices": [0], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Which three objects can be added to a Microsoft Power BI dashboard? (Select three.)", "options": ["a text box", "a visualization from a report", "a Microsoft PowerPoint slide", "a report page", "a dataflow"], "correctIndices": [0, 1, 3], "multi": true}, {"domain": 3, "domainName": "Non-Relational Data on Azure", "stem": "What is the primary purpose of a partition key in Azure Cosmos DB?", "options": ["To enforce referential integrity between containers.", "To optimize query performance and data distribution.", "To encrypt data at rest.", "To define the API type for the account."], "correctIndices": [1], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "Which type of database object helps improve the speed of data retrieval?", "options": ["Table", "View", "Stored procedure", "Index"], "correctIndices": [3], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Which Azure Data Factory component contains the information used to connect to external resources?", "options": ["a Pipeline", "a Dataset", "a Linked service", "a Trigger"], "correctIndices": [2], "multi": false}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "Which database transaction property ensures that individual transactions are executed only once and either succeed in their entirety or roll back?", "options": ["consistency", "isolation", "atomicity", "durability"], "correctIndices": [2], "multi": false}, {"domain": 3, "domainName": "Non-Relational Data on Azure", "stem": "When provisioning an Azure Cosmos DB account, which feature provides redundancy within an Azure region?", "options": ["the strong consistency level", "Availability Zones", "multi-master replication", "automatic failover"], "correctIndices": [1], "multi": false}, {"domain": 3, "domainName": "Non-Relational Data on Azure", "stem": "Complete the sentence: When using the Azure Cosmos DB Gremlin API, the container resource type is projected as a ___", "options": ["document.", "graph.", "partition key.", "table."], "correctIndices": [1], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Which Azure service persists a tabular representation of data stored in Parquet format?", "options": ["Azure Synapse Analytics", "Azure Data Factory", "Azure Data Lake Storage", "Azure Blob Storage"], "correctIndices": [0], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "Which tool can be used to manage Azure Database for PostgreSQL?", "options": ["Visual Studio Installer", "Azure Data Studio for MySQL", "pgAdmin", "SQL Server Management Studio (SSMS)"], "correctIndices": [2], "multi": false}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "Which database transaction property ensures that transactional changes to a database are preserved during unexpected operating system restarts?", "options": ["isolation", "consistency", "atomicity", "durability"], "correctIndices": [3], "multi": false}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "What do relational database tables consist of?", "options": ["Nodes and edges", "Columns and rows", "Documents and collections", "Keys and values only"], "correctIndices": [1], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "A wind turbine that sends 50 sensor readings per second to a monitoring system is an example of which type of workload?", "options": ["transactional", "streaming", "batch", "data warehousing"], "correctIndices": [1], "multi": false}, {"domain": 3, "domainName": "Non-Relational Data on Azure", "stem": "What is the typical latency for read operations against media files stored in the Cool access tier of Azure Blob Storage?", "options": ["a few milliseconds", "a few hours", "a few seconds", "a few minutes"], "correctIndices": [0], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Which Azure service is best suited for storing tabular datasets that require relational integrity?", "options": ["Azure SQL Database", "Azure Cosmos DB for NoSQL", "Power BI", "Azure Blob Storage"], "correctIndices": [0], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "What are two characteristics of real-time data processing? (Select two.)", "options": ["High latency is acceptable", "Data is processed as it is created", "Low latency is expected", "Data is processed periodically"], "correctIndices": [1, 2], "multi": true}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "Which tool is a lightweight, cross-platform source code editor with an mssql extension that provides a rich T-SQL editing experience?", "options": ["Azure Data Explorer", "Microsoft Visual Studio Code", "Microsoft SQL Server Data Tools (SSDT)", "Microsoft SQL Server Management Studio (SSMS)"], "correctIndices": [1], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Which two Azure services can be used to provision Apache Spark clusters? (Select two.)", "options": ["Azure Log Analytics", "Azure Time Series Insights", "Azure Databricks", "Azure HDInsight"], "correctIndices": [2, 3], "multi": true}, {"domain": 2, "domainName": "Relational Data on Azure", "stem": "What is a benefit of normalizing a database?", "options": ["It reduces data redundancy and improves data integrity.", "It eliminates relationships between tables.", "It requires fewer tables.", "It always improves query performance."], "correctIndices": [0], "multi": false}, {"domain": 1, "domainName": "Core Data Concepts", "stem": "Complete the sentence: ___ are responsible for the availability, performance, and optimization of databases.", "options": ["Data scientists", "Data analysts", "Data engineers", "Database administrators"], "correctIndices": [3], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Which two features distinguish Delta Lake from plain Azure Data Lake Storage? (Select two.)", "options": ["transactional consistency", "support for batch data", "support for an Apache Spark runtime", "schema enforcement", "support for streaming data"], "correctIndices": [0, 3], "multi": true}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "In Azure Data Factory, which type of activity is a 'Copy' activity classified as?", "options": ["Data movement", "Data transformation", "Control", "Orchestration"], "correctIndices": [0], "multi": false}, {"domain": 4, "domainName": "Analytics Workloads on Azure", "stem": "Where can you build and edit Microsoft Power BI reports?", "options": ["Only in the Power BI phone app", "In either Power BI Desktop or the Power BI service", "Only in the Power BI service", "Only in Power BI Desktop"], "correctIndices": [1], "multi": false}];
+
+const domainColor = {1:'d1',2:'d2',3:'d3',4:'d4'};
+// answers[i] is an array of selected option indices
+const answers = EXAM.map(() => []);
+let submitted = false;
+
+const qContainer = document.getElementById('questions');
+
+function render() {
+  qContainer.innerHTML = '';
+  EXAM.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    card.id = 'q' + i;
+
+    const meta = document.createElement('div');
+    meta.className = 'qmeta';
+    meta.innerHTML = `<span class="qnum">Question ${i+1} of ${EXAM.length}</span>
+      <span class="qdomain" style="background:var(--${domainColor[q.domain]})">${q.domainName}</span>`;
+    card.appendChild(meta);
+
+    const stem = document.createElement('div');
+    stem.className = 'qstem';
+    stem.textContent = q.stem;
+    card.appendChild(stem);
+
+    if (q.multi) {
+      const hint = document.createElement('div');
+      hint.className = 'qhint';
+      hint.textContent = `Select ${q.correctIndices.length} answer${q.correctIndices.length > 1 ? 's' : ''}.`;
+      card.appendChild(hint);
+    }
+
+    const optWrap = document.createElement('div');
+    optWrap.className = 'options';
+    const inputType = q.multi ? 'checkbox' : 'radio';
+
+    q.options.forEach((optText, oi) => {
+      const label = document.createElement('label');
+      label.className = 'option';
+      label.id = `q${i}_o${oi}`;
+      label.innerHTML = `<input type="${inputType}" name="q${i}" value="${oi}"> <span>${optText}</span> <span class="resultTag"></span>`;
+      const input = label.querySelector('input');
+      input.addEventListener('change', () => {
+        if (q.multi) {
+          const idx = answers[i].indexOf(oi);
+          if (input.checked) {
+            if (idx === -1) answers[i].push(oi);
+          } else {
+            if (idx !== -1) answers[i].splice(idx, 1);
+          }
+          label.classList.toggle('selected', input.checked);
+        } else {
+          answers[i] = [oi];
+          [...optWrap.children].forEach(el => el.classList.remove('selected'));
+          label.classList.add('selected');
+        }
+        updateProgress();
+      });
+      optWrap.appendChild(label);
+    });
+
+    card.appendChild(optWrap);
+    qContainer.appendChild(card);
+  });
+}
+
+function isAnswered(i) {
+  const q = EXAM[i];
+  if (q.multi) {
+    return answers[i].length === q.correctIndices.length;
+  }
+  return answers[i].length === 1;
+}
+
+function updateProgress() {
+  const answered = EXAM.reduce((acc, _, i) => acc + (isAnswered(i) ? 1 : 0), 0);
+  document.getElementById('progressText').textContent = `${answered} / ${EXAM.length} answered`;
+  document.getElementById('progressFill').style.width = (answered / EXAM.length * 100) + '%';
+}
+
+document.getElementById('submitBtn').addEventListener('click', () => {
+  if (submitted) return;
+  const firstUnanswered = EXAM.findIndex((_, i) => !isAnswered(i));
+  if (firstUnanswered !== -1) {
+    document.getElementById('warnMsg').style.display = 'block';
+    document.querySelectorAll('.qcard').forEach(c => c.classList.remove('unanswered-flag'));
+    document.getElementById('q' + firstUnanswered).classList.add('unanswered-flag');
+    document.getElementById('q' + firstUnanswered).scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  submitted = true;
+  gradeExam();
+});
+
+function arraysEqualAsSets(a, b) {
+  if (a.length !== b.length) return false;
+  const sa = [...a].sort((x,y)=>x-y);
+  const sb = [...b].sort((x,y)=>x-y);
+  return sa.every((v,i) => v === sb[i]);
+}
+
+function gradeExam() {
+  document.getElementById('warnMsg').style.display = 'none';
+  const domainStats = {1:{name:'Core Data Concepts',correct:0,total:0},
+                        2:{name:'Relational Data on Azure',correct:0,total:0},
+                        3:{name:'Non-Relational Data on Azure',correct:0,total:0},
+                        4:{name:'Analytics Workloads on Azure',correct:0,total:0}};
+  let totalCorrect = 0;
+
+  EXAM.forEach((q, i) => {
+    const userAns = answers[i];
+    const isCorrect = arraysEqualAsSets(userAns, q.correctIndices);
+    domainStats[q.domain].total++;
+    if (isCorrect) { domainStats[q.domain].correct++; totalCorrect++; }
+
+    q.options.forEach((optText, oi) => {
+      const label = document.getElementById(`q${i}_o${oi}`);
+      const input = label.querySelector('input');
+      input.disabled = true;
+      const tag = label.querySelector('.resultTag');
+      const isCorrectOpt = q.correctIndices.includes(oi);
+      const wasSelected = userAns.includes(oi);
+      if (isCorrectOpt && wasSelected) {
+        label.classList.add('correct-answer');
+        tag.textContent = 'Correct';
+        tag.classList.add('correct');
+      } else if (isCorrectOpt && !wasSelected) {
+        label.classList.add('missed-answer');
+        tag.textContent = 'Correct answer';
+        tag.classList.add('correct');
+      } else if (!isCorrectOpt && wasSelected) {
+        label.classList.add('wrong-answer');
+        tag.textContent = 'Your answer';
+        tag.classList.add('wrong');
+      }
+    });
+  });
+
+  const pct = Math.round(totalCorrect / EXAM.length * 100);
+  const pass = pct >= 70;
+
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.style.display = 'block';
+  resultsDiv.innerHTML = `
+    <h2>Exam Results</h2>
+    <div class="scoreBig ${pass ? 'pass' : 'fail'}">${totalCorrect} / ${EXAM.length} &middot; ${pct}%</div>
+    <div style="color:var(--muted); font-size:0.85rem; margin-bottom:14px;">
+      ${pass ? 'Passing score reached (DP-900 pass mark is 700/1000, roughly 70%).' : 'Below the typical 70% pass threshold &mdash; review the domains below.'}
+    </div>
+    ${[1,2,3,4].map(d => {
+      const s = domainStats[d];
+      const p = Math.round(s.correct / s.total * 100);
+      return `<div class="domainRow">
+        <span class="dName"><span class="dot dot-${domainColor[d]}"></span>${s.name}</span>
+        <span>${s.correct} / ${s.total} &middot; ${p}%</span>
+      </div>`;
+    }).join('')}
+  `;
+
+  document.getElementById('submitBtn').textContent = 'Exam submitted';
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('progressText').textContent = 'Review your answers below';
+  resultsDiv.scrollIntoView({behavior:'smooth'});
+}
+
+updateProgress();
+render();
+</script>
+
+</body>
+</html>

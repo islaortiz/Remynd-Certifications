@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DP-900 Cheat Sheet | Azure Data Fundamentals</title>
+<style>
+  :root {
+    --bg: #F0F5FF;
+    --card: #FFFFFF;
+    --text: #1B2040;
+    --muted: #5A6A8A;
+    --border: #D6E3FF;
+    --d1: #0078D4;
+    --d2: #107C41;
+    --d3: #5C2D91;
+    --d4: #CA5010;
+    --trap: #D13438;
+    --tip: #0078D4;
+    --yes: #107C41;
+    --no: #D13438;
+    --warn: #B7700F;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0A1628 0%, #0F2D5E 100%);
+    color: white;
+    padding: 28px 20px 24px;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.5px; }
+  .header p { color: #90AFDD; font-size: 0.88rem; margin-top: 4px; }
+
+  .domain-badges {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-top: 18px;
+  }
+  .badge {
+    padding: 5px 12px; border-radius: 20px; font-size: 0.78rem;
+    font-weight: 600; color: white; white-space: nowrap;
+  }
+  .badge-d1 { background: var(--d1); }
+  .badge-d2 { background: var(--d2); }
+  .badge-d3 { background: var(--d3); }
+  .badge-d4 { background: var(--d4); }
+
+  /* ── NAV ── */
+  .sticky-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: white; border-bottom: 2px solid var(--border);
+    overflow-x: auto; white-space: nowrap;
+    padding: 0 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .sticky-nav a {
+    display: inline-block; padding: 12px 14px;
+    text-decoration: none; font-size: 0.8rem; font-weight: 600;
+    color: var(--muted); border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .sticky-nav a:hover { color: var(--text); }
+  .sticky-nav a.d1 { border-bottom-color: var(--d1); color: var(--d1); }
+  .sticky-nav a.d2 { border-bottom-color: var(--d2); color: var(--d2); }
+  .sticky-nav a.d3 { border-bottom-color: var(--d3); color: var(--d3); }
+  .sticky-nav a.d4 { border-bottom-color: var(--d4); color: var(--d4); }
+
+  /* ── MAIN LAYOUT ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 20px 14px; }
+
+  /* ── SECTIONS ── */
+  .domain-section { margin-bottom: 28px; }
+  .domain-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 3px solid;
+  }
+  .domain-header .domain-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1rem; color: white; flex-shrink: 0;
+  }
+  .domain-header h2 { font-size: 1.1rem; font-weight: 700; }
+  .domain-header .weight {
+    margin-left: auto; font-size: 0.8rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 12px; color: white;
+  }
+  .d1-theme .domain-header { border-color: var(--d1); }
+  .d1-theme .domain-num, .d1-theme .weight { background: var(--d1); }
+  .d2-theme .domain-header { border-color: var(--d2); }
+  .d2-theme .domain-num, .d2-theme .weight { background: var(--d2); }
+  .d3-theme .domain-header { border-color: var(--d3); }
+  .d3-theme .domain-num, .d3-theme .weight { background: var(--d3); }
+  .d4-theme .domain-header { border-color: var(--d4); }
+  .d4-theme .domain-num, .d4-theme .weight { background: var(--d4); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card); border-radius: 10px;
+    box-shadow: var(--shadow); margin-bottom: 12px;
+    border: 1px solid var(--border); overflow: hidden;
+  }
+  details > summary {
+    padding: 13px 16px;
+    cursor: pointer; font-weight: 700; font-size: 0.92rem;
+    list-style: none; display: flex; align-items: center;
+    justify-content: space-between; user-select: none;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::after { content: '＋'; font-size: 1.1rem; color: var(--muted); }
+  details[open] > summary::after { content: '－'; }
+  details > summary:hover { background: var(--bg); }
+  .card-body { padding: 4px 16px 16px; }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th {
+    background: #1B2040; color: white;
+    padding: 8px 10px; text-align: left; font-weight: 600;
+  }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #F8FBFF; }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 0.72rem; font-weight: 700; vertical-align: middle;
+    margin: 1px;
+  }
+  .tag-trap { background: #FFE5E5; color: var(--trap); }
+  .tag-tip  { background: #E3F0FF; color: var(--tip); }
+  .tag-yes  { background: #E3F4EA; color: var(--yes); }
+  .tag-no   { background: #FFE5E5; color: var(--no); }
+  .tag-warn { background: #FFF4E0; color: var(--warn); }
+
+  /* ── PILL LISTS ── */
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .pill {
+    padding: 4px 12px; border-radius: 14px; font-size: 0.8rem;
+    font-weight: 600; border: 2px solid;
+  }
+  .pill-d1 { color: var(--d1); border-color: var(--d1); background: #E3F0FF; }
+  .pill-d2 { color: var(--d2); border-color: var(--d2); background: #E5F4EB; }
+  .pill-d3 { color: var(--d3); border-color: var(--d3); background: #EDE5F7; }
+  .pill-d4 { color: var(--d4); border-color: var(--d4); background: #FCEADE; }
+
+  /* ── ALERT BOXES ── */
+  .alert {
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 0.83rem; margin: 10px 0;
+    border-left: 4px solid;
+  }
+  .alert-trap { background: #FFF0F0; border-color: var(--trap); }
+  .alert-tip  { background: #EEF5FF; border-color: var(--tip); }
+  .alert strong { font-weight: 700; }
+
+  /* ── MNEMONIC ── */
+  .mnemonic {
+    background: linear-gradient(135deg, #0F2D5E, #1B2040);
+    color: white; border-radius: 8px; padding: 12px 14px;
+    font-size: 0.83rem; margin-top: 10px;
+  }
+  .mnemonic strong { color: #90CFFF; }
+
+  /* ── YES/NO INLINE ── */
+  .yn-yes { color: var(--yes); font-weight: 700; }
+  .yn-no  { color: var(--no);  font-weight: 700; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 24px;
+    color: var(--muted); font-size: 0.8rem; margin-top: 8px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.3rem; }
+    .sticky-nav a { padding: 10px 10px; font-size: 0.75rem; }
+    th, td { padding: 6px 8px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>DP-900 Azure Data Fundamentals</h1>
+  <p>Complete cheat sheet · Exam-ready reference</p>
+  <div class="domain-badges">
+    <span class="badge badge-d1">① Core Concepts ~25%</span>
+    <span class="badge badge-d2">② Relational Data ~25%</span>
+    <span class="badge badge-d3">③ Non-Relational Data ~20%</span>
+    <span class="badge badge-d4">④ Analytics Workloads ~30%</span>
+  </div>
+</div>
+
+<nav class="sticky-nav">
+  <a href="#d1" class="d1">① Core Concepts</a>
+  <a href="#d2" class="d2">② Relational</a>
+  <a href="#d3" class="d3">③ Non-Relational</a>
+  <a href="#d4" class="d4">④ Analytics</a>
+  <a href="#traps">⚠ Exam Traps</a>
+</nav>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DOMAIN 1: CORE CONCEPTS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="domain-section d1-theme" id="d1">
+  <div class="domain-header">
+    <div class="domain-num">1</div>
+    <h2>Core Data Concepts</h2>
+    <span class="weight">~25%</span>
+  </div>
+
+  <!-- Analytics Types -->
+  <div class="card">
+    <details open>
+      <summary>🔍 5 Analytics Types</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Type</th><th>Question answered</th><th>Example</th></tr>
+            <tr><td><strong>Descriptive</strong></td><td>What happened?</td><td>Monthly sales dashboard, KPI report</td></tr>
+            <tr><td><strong>Diagnostic</strong></td><td>Why did it happen?</td><td>Why did Q3 sales drop?</td></tr>
+            <tr><td><strong>Predictive</strong></td><td>What will happen?</td><td>Will this customer churn?</td></tr>
+            <tr><td><strong>Prescriptive</strong></td><td>What should we do?</td><td>Offer 10% discount to prevent churn</td></tr>
+            <tr><td><strong>Cognitive</strong></td><td>Perceives unstructured data via AI</td><td>Closed captions, speech-to-text, image tagging, translation</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> "Creating closed captions from audio" → <strong>Cognitive</strong>, NOT descriptive. Cognitive = AI perceiving audio/video/images.
+        </div>
+        <div class="mnemonic"><strong>Order: </strong> Descriptive → Diagnostic → Predictive → Prescriptive → Cognitive (past → future → action → AI)</div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Data Types -->
+  <div class="card">
+    <details>
+      <summary>📁 Data Types & File Formats</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Type</th><th>Structure</th><th>Examples</th></tr>
+            <tr><td><strong>Structured</strong></td><td>Fixed schema, rows & columns</td><td>SQL tables, Excel</td></tr>
+            <tr><td><strong>Semi-structured</strong></td><td>Schema flexible, self-describing</td><td>JSON, XML, YAML, Avro</td></tr>
+            <tr><td><strong>Unstructured</strong></td><td>No schema</td><td>Images, video, audio, PDF</td></tr>
+          </table>
+        </div>
+        <div class="table-wrap" style="margin-top:14px">
+          <table>
+            <tr><th>Format</th><th>Type</th><th>Best for</th></tr>
+            <tr><td><strong>CSV</strong></td><td>Row-based text</td><td>Simple data exchange</td></tr>
+            <tr><td><strong>JSON</strong></td><td>Semi-structured</td><td>APIs, document stores</td></tr>
+            <tr><td><strong>Parquet</strong></td><td>Columnar binary</td><td>Analytics, Synapse, ADLS</td></tr>
+            <tr><td><strong>Avro</strong></td><td>Row-based binary</td><td>Streaming, serialization</td></tr>
+            <tr><td><strong>ORC</strong></td><td>Columnar binary</td><td>Hive/big data workloads</td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Job Roles -->
+  <div class="card">
+    <details>
+      <summary>👥 Data Job Roles</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Role</th><th>Core responsibility</th><th>Exam trigger words</th></tr>
+            <tr><td><strong>Data Engineer</strong></td><td>Build pipelines, move & transform data, manage infrastructure</td><td>"pipeline", "transfer data", "data warehouse ingestion"</td></tr>
+            <tr><td><strong>Database Administrator</strong></td><td>Create & manage databases, security, backups, performance</td><td>"create a transactional database", "manage access"</td></tr>
+            <tr><td><strong>Data Analyst</strong></td><td>Query data, build reports & visualisations, surface insights</td><td>"chart", "report", "dashboard", "visualise"</td></tr>
+            <tr><td><strong>Data Architect</strong></td><td>Design overall data strategy and system architecture</td><td>"design the architecture", "overall strategy"</td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- OLTP vs OLAP -->
+  <div class="card">
+    <details>
+      <summary>⚡ OLTP vs OLAP</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th></th><th>OLTP (Transactional)</th><th>OLAP (Analytical)</th></tr>
+            <tr><td><strong>Purpose</strong></td><td>Day-to-day transactions</td><td>Analysis, reporting</td></tr>
+            <tr><td><strong>Operations</strong></td><td>INSERT, UPDATE, DELETE</td><td>SELECT, aggregations</td></tr>
+            <tr><td><strong>Data volume</strong></td><td>Current, small per query</td><td>Historical, huge datasets</td></tr>
+            <tr><td><strong>Schema</strong></td><td>Normalised (3NF)</td><td>Star/snowflake schema</td></tr>
+            <tr><td><strong>Azure service</strong></td><td>Azure SQL Database</td><td>Azure Synapse Analytics</td></tr>
+            <tr><td><strong>Response time</strong></td><td>Milliseconds</td><td>Seconds to minutes</td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Service Models -->
+  <div class="card">
+    <details>
+      <summary>☁️ IaaS vs PaaS vs SaaS</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Model</th><th>You manage</th><th>Microsoft manages</th><th>Azure example</th></tr>
+            <tr><td><strong>IaaS</strong></td><td>OS, engine, backups, patches</td><td>Hardware, networking</td><td>SQL Server on Azure VM</td></tr>
+            <tr><td><strong>PaaS</strong></td><td>Data, access config</td><td>OS, engine, backups, patches</td><td>Azure SQL Database, Cosmos DB</td></tr>
+            <tr><td><strong>SaaS</strong></td><td>Your own data/content</td><td>Everything</td><td>Microsoft 365, Power BI (service)</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-tip">
+          <strong>💡 PaaS facts for exam:</strong> No OS patching · Automatic backups · You do NOT need to apply database engine upgrades · Microsoft 365 subscription NOT required for Azure services.
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DOMAIN 2: RELATIONAL DATA -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="domain-section d2-theme" id="d2">
+  <div class="domain-header">
+    <div class="domain-num">2</div>
+    <h2>Relational Data on Azure</h2>
+    <span class="weight">~25%</span>
+  </div>
+
+  <!-- Azure SQL Family -->
+  <div class="card">
+    <details open>
+      <summary>🗄️ Azure SQL Service Comparison</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Service</th><th>Model</th><th>SQL Server compat.</th><th>Management</th><th>Pick when...</th></tr>
+            <tr><td><strong>Azure SQL Database</strong></td><td>PaaS</td><td>High (some limits)</td><td>Fully managed</td><td>New cloud-native app, minimal features needed</td></tr>
+            <tr><td><strong>Azure SQL Managed Instance</strong></td><td>PaaS</td><td>~99% (near full)</td><td>Fully managed</td><td>Lift-and-shift + needs SQL Agent, Database Mail, Service Broker, linked servers</td></tr>
+            <tr><td><strong>SQL Server on Azure VM</strong></td><td>IaaS</td><td>100%</td><td>You manage</td><td>Full control needed, legacy features, OS access required</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> "Minimize maintenance + needs Database Mail / Service Broker" → <strong>SQL Managed Instance</strong>, NOT SQL Database single/elastic pool. These features are NOT available in SQL Database.
+        </div>
+        <div class="alert alert-tip">
+          <strong>💡 Azure Hybrid Benefit:</strong> Existing SQL Server licenses with Software Assurance can reduce Azure SQL Database costs by up to 40%. This is the answer when asked about cost reduction with existing licenses.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- SQL Language Categories -->
+  <div class="card">
+    <details>
+      <summary>📝 SQL Language Categories (DDL / DML / DCL)</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Category</th><th>Full name</th><th>Statements</th></tr>
+            <tr><td><strong>DDL</strong></td><td>Data Definition Language</td><td>CREATE, ALTER, DROP, TRUNCATE, RENAME</td></tr>
+            <tr><td><strong>DML</strong></td><td>Data Manipulation Language</td><td><strong>SELECT, INSERT, UPDATE, DELETE</strong></td></tr>
+            <tr><td><strong>DCL</strong></td><td>Data Control Language</td><td>GRANT, REVOKE, DENY</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> GRANT and REVOKE → <strong>DCL</strong>, NOT DML. DROP → <strong>DDL</strong>, NOT DML. INSERT → <strong>DML</strong> ✅
+        </div>
+        <div class="mnemonic">
+          <strong>SQL Clause Order: </strong>
+          SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY<br>
+          <strong>Memory: </strong>"<strong>S</strong>ome <strong>F</strong>riends <strong>W</strong>atch <strong>G</strong>reat <strong>H</strong>ollywood <strong>O</strong>peras"
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ACID -->
+  <div class="card">
+    <details>
+      <summary>🔐 ACID Properties</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Letter</th><th>Property</th><th>Definition</th><th>Hook</th></tr>
+            <tr><td><strong>A</strong></td><td>Atomicity</td><td>All statements succeed or ALL roll back. No partial commits.</td><td>"Atom" = indivisible</td></tr>
+            <tr><td><strong>C</strong></td><td>Consistency</td><td>DB moves from one valid state to another. All rules/constraints respected.</td><td>"Consistent" = always valid</td></tr>
+            <tr><td><strong>I</strong></td><td>Isolation</td><td>Concurrent transactions don't see each other's uncommitted changes.</td><td>"Isolated" = separated</td></tr>
+            <tr><td><strong>D</strong></td><td>Durability</td><td>Once committed, data survives failures. Logged to disk.</td><td>"Durable" = permanent</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> "All data changes will be logged and accounted for" → This is <strong>Durability</strong>, NOT Consistency. Consistency = DB stays in a valid state per its rules.
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> "Processes can see only data in a consistent state" → This is <strong>Isolation</strong>, NOT Consistency.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- SQL Concepts -->
+  <div class="card">
+    <details>
+      <summary>🏗️ Key SQL Objects</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Object</th><th>Definition</th><th>Key fact</th></tr>
+            <tr><td><strong>View</strong></td><td>Virtual table defined by a saved SELECT query</td><td>No data stored; executes query on access</td></tr>
+            <tr><td><strong>Stored Procedure</strong></td><td>Saved SQL code block with logic (INSERT/UPDATE/DELETE allowed)</td><td>Reusable; can contain any SQL</td></tr>
+            <tr><td><strong>Index</strong></td><td>Data structure that speeds up lookups on a table</td><td>Like a book's index; improves SELECT performance</td></tr>
+            <tr><td><strong>Heap</strong></td><td>Table with NO clustered index</td><td>Data in no particular order</td></tr>
+            <tr><td><strong>Clustered Index</strong></td><td>Defines the physical order of rows in a table</td><td>Only 1 per table (it IS the table)</td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Normalization -->
+  <div class="card">
+    <details>
+      <summary>📐 Normalisation</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Statement</th><th>True?</th></tr>
+            <tr><td>Normalisation eliminates relationships between tables</td><td><span class="yn-no">❌ NO</span> — it defines and preserves them properly</td></tr>
+            <tr><td>Normalisation reduces data redundancy</td><td><span class="yn-yes">✅ YES</span> — splits into related tables</td></tr>
+            <tr><td>Normalisation improves data integrity</td><td><span class="yn-yes">✅ YES</span> — enforces consistent, accurate data</td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Tools -->
+  <div class="card">
+    <details>
+      <summary>🛠️ Query Tools</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Tool</th><th>Works with</th></tr>
+            <tr><td><strong>SSMS</strong> (SQL Server Management Studio)</td><td>SQL Server, Azure SQL DB, SQL Managed Instance, Synapse SQL pools</td></tr>
+            <tr><td><strong>Azure Data Studio</strong></td><td>SQL Server (incl. big data clusters), Azure SQL, Synapse, PostgreSQL (ext.)</td></tr>
+            <tr><td><strong>MySQL Workbench</strong></td><td>Azure Database for MySQL, Azure Database for <strong>MariaDB</strong></td></tr>
+            <tr><td><strong>pgAdmin</strong></td><td>Azure Database for PostgreSQL</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-tip">
+          <strong>💡 Rule:</strong> Tools designed for an engine also work with Azure's managed version of that engine. MySQL Workbench works with MariaDB because MariaDB is a MySQL fork sharing the same protocol.
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DOMAIN 3: NON-RELATIONAL DATA -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="domain-section d3-theme" id="d3">
+  <div class="domain-header">
+    <div class="domain-num">3</div>
+    <h2>Non-Relational Data on Azure</h2>
+    <span class="weight">~20%</span>
+  </div>
+
+  <!-- Cosmos DB APIs -->
+  <div class="card">
+    <details open>
+      <summary>🌐 Azure Cosmos DB APIs</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>API</th><th>Data model</th><th>Trigger word</th></tr>
+            <tr><td><strong>NoSQL API</strong> (Core)</td><td>JSON documents</td><td>Default Cosmos DB, document store</td></tr>
+            <tr><td><strong>MongoDB API</strong></td><td>JSON documents (BSON)</td><td>MongoDB workloads, JSON + SQL queries</td></tr>
+            <tr><td><strong>Gremlin API</strong></td><td>Graph (nodes + edges)</td><td>"relationships between entities", networks, social graphs</td></tr>
+            <tr><td><strong>Table API</strong></td><td>Key/value pairs</td><td>"key/value", Azure Table Storage upgrade</td></tr>
+            <tr><td><strong>Cassandra API</strong></td><td>Column-family (wide-column)</td><td>High write throughput, Apache Cassandra workloads</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> Key/value → <strong>Table API</strong>, NOT Cassandra API. Cassandra = wide-column (column-family). Very commonly confused!
+        </div>
+        <div class="alert alert-tip">
+          <strong>💡 Throughput levels in Cosmos DB:</strong> Can be set at <strong>database</strong> level or <strong>container</strong> level. NOT at item or partition level.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- NoSQL Data Models -->
+  <div class="card">
+    <details>
+      <summary>📊 NoSQL Data Models</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Model</th><th>Structure</th><th>Best for</th><th>Azure service</th></tr>
+            <tr><td><strong>Document</strong></td><td>Self-contained JSON/XML docs</td><td>Catalogs, user profiles, content</td><td>Cosmos DB (NoSQL/MongoDB API)</td></tr>
+            <tr><td><strong>Key/Value</strong></td><td>Unique key → value</td><td>Sessions, caching, preferences</td><td>Cosmos DB (Table API), Redis</td></tr>
+            <tr><td><strong>Graph</strong></td><td>Nodes + edges (relationships)</td><td>Social networks, fraud detection, network topology</td><td>Cosmos DB (Gremlin API)</td></tr>
+            <tr><td><strong>Column-family</strong></td><td>Rows with flexible columns</td><td>High write throughput, IoT, time-series</td><td>Cosmos DB (Cassandra API)</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> "Relationships between utilisation levels of network devices" → <strong>Graph</strong> database. Not columnar! Graph = nodes + edges = network topology.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Azure Storage Types -->
+  <div class="card">
+    <details>
+      <summary>💾 Azure Storage Services</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Service</th><th>Protocol/Access</th><th>Best for</th><th>Key fact</th></tr>
+            <tr><td><strong>Blob Storage</strong></td><td>REST / HTTP/HTTPS</td><td>Unstructured data (images, video, backups)</td><td>Object store; 3 tiers: Hot, Cool, Archive</td></tr>
+            <tr><td><strong>Azure Files</strong></td><td><strong>SMB v3</strong> / NFS</td><td>Cloud file shares, lift-and-shift file servers</td><td>Mount as network drive</td></tr>
+            <tr><td><strong>Azure Table Storage</strong></td><td>REST / OData</td><td>Key/value structured data</td><td>NoSQL; Cosmos DB Table API = premium version</td></tr>
+            <tr><td><strong>Azure Queue Storage</strong></td><td>REST / HTTP</td><td>Message queuing between services</td><td>Decouples application components</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> SMB protocol → <strong>Azure Files</strong>, NOT Blob Storage. Blob uses REST/HTTP. Azure Files is the only storage service mountable as a network drive via SMB.
+        </div>
+        <div class="alert alert-tip">
+          <strong>💡 ADLS Gen2:</strong> Azure Data Lake Storage Gen2 = Blob Storage + hierarchical namespace enabled. Used for big data analytics. Parquet files live here.
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DOMAIN 4: ANALYTICS WORKLOADS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="domain-section d4-theme" id="d4">
+  <div class="domain-header">
+    <div class="domain-num">4</div>
+    <h2>Analytics Workloads on Azure</h2>
+    <span class="weight">~30%</span>
+  </div>
+
+  <!-- Azure Analytics Services -->
+  <div class="card">
+    <details open>
+      <summary>⚙️ Azure Analytics Services</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Service</th><th>Purpose</th><th>Primary language</th><th>Key fact</th></tr>
+            <tr><td><strong>Azure Synapse Analytics</strong></td><td>Unified analytics platform (SQL + Spark)</td><td>SQL</td><td>Combines data warehouse + big data; outputs Parquet; serverless or dedicated SQL pools</td></tr>
+            <tr><td><strong>Azure Data Factory (ADF)</strong></td><td>Data integration & pipeline orchestration (ETL/ELT)</td><td>GUI / JSON</td><td>Move & transform data between services</td></tr>
+            <tr><td><strong>Azure Databricks</strong></td><td>Apache Spark analytics & ML platform</td><td>Python / Spark / Scala</td><td>Collaborative notebooks; ML workloads</td></tr>
+            <tr><td><strong>Azure Stream Analytics</strong></td><td>Real-time streaming data processing</td><td>SQL</td><td>Reads from Event Hubs / IoT Hub</td></tr>
+            <tr><td><strong>Azure Data Explorer (ADX)</strong></td><td>Real-time log & telemetry analytics</td><td><strong>KQL</strong></td><td>Time-series; also used in Azure Monitor, Sentinel</td></tr>
+            <tr><td><strong>Azure HDInsight</strong></td><td>Managed open-source clusters (Hadoop, Hive, Kafka)</td><td>HiveQL / Spark</td><td>Legacy big data workloads</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> Azure Data Explorer uses <strong>KQL</strong> (Kusto Query Language) — NOT SQL. Stream Analytics and Synapse use SQL. ADX is the only major Azure analytics service using KQL.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Language-Service Mapping -->
+  <div class="card">
+    <details>
+      <summary>🔤 Language → Service Mapping</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Service</th><th>Primary Language</th><th>Remember because...</th></tr>
+            <tr><td>Azure Data Explorer</td><td><strong>KQL</strong></td><td>Unique Microsoft log/telemetry language</td></tr>
+            <tr><td>Azure Stream Analytics</td><td><strong>SQL</strong></td><td>SQL-like for real-time streams</td></tr>
+            <tr><td>Azure Synapse Analytics</td><td><strong>SQL</strong></td><td>Enterprise analytics = SQL core</td></tr>
+            <tr><td>Azure Databricks</td><td><strong>Python / Spark</strong></td><td>ML + developer workloads</td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ADF Activity Types -->
+  <div class="card">
+    <details>
+      <summary>🏭 Azure Data Factory — Activity Types</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Activity type</th><th>Purpose</th><th>Examples</th></tr>
+            <tr><td><strong>Data movement</strong></td><td>Moves data from source to destination</td><td>Copy activity</td></tr>
+            <tr><td><strong>Data transformation</strong></td><td>Reshapes / processes data</td><td>Mapping data flow, Stored Procedure, Databricks Notebook</td></tr>
+            <tr><td><strong>Control</strong></td><td>Orchestrates pipeline logic & flow</td><td><strong>Lookup</strong>, ForEach, If Condition, Wait, Execute Pipeline</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> <strong>Lookup</strong> = <strong>Control</strong> activity — NOT transformation. It retrieves a value to drive pipeline logic. This is the most common ADF trap on the exam.
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> <strong>Mapping data flow</strong> = <strong>Data transformation</strong> — NOT control. It reshapes data visually (joins, aggregations, filters).
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Star Schema / OLAP -->
+  <div class="card">
+    <details>
+      <summary>⭐ Star Schema & Analytical Models</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Concept</th><th>Definition</th></tr>
+            <tr><td><strong>Fact table</strong></td><td>Central table containing measurable data (sales amounts, quantities, revenue)</td></tr>
+            <tr><td><strong>Dimension table</strong></td><td>Surrounding tables with descriptive attributes (Date, Product, Customer, Geography)</td></tr>
+            <tr><td><strong>Measure</strong></td><td>Numeric value that can be aggregated (SUM, AVG, COUNT)</td></tr>
+            <tr><td><strong>Dimension</strong></td><td>Categorical attribute used to slice/filter data</td></tr>
+            <tr><td><strong>Cube</strong></td><td>Multidimensional structure formed where dimensions intersect</td></tr>
+            <tr><td><strong>Star schema</strong></td><td>Fact table surrounded by denormalised dimension tables</td></tr>
+            <tr><td><strong>Snowflake schema</strong></td><td>Like star schema but dimension tables are further normalised</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> "Any point where dimensions intersect represents ___" → <strong>a cube</strong>, NOT an aggregated measure. The measure lives at the intersection; the cube is the structure itself.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Power BI -->
+  <div class="card">
+    <details>
+      <summary>📊 Power BI Components</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Component</th><th>Purpose</th></tr>
+            <tr><td><strong>Power BI Desktop</strong></td><td>Windows app to build reports and data models</td></tr>
+            <tr><td><strong>Power BI Service</strong></td><td>Cloud platform to publish, share, and collaborate</td></tr>
+            <tr><td><strong>Power BI Mobile</strong></td><td>iOS/Android app to view reports on the go</td></tr>
+            <tr><td><strong>Power BI Report Builder</strong></td><td>Tool for paginated reports (pixel-perfect, printable)</td></tr>
+            <tr><td><strong>Paginated Report</strong></td><td>Traditional-style report designed to be printed or exported to PDF</td></tr>
+            <tr><td><strong>Dashboard</strong></td><td>Single page of pinned visuals from multiple reports</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-tip">
+          <strong>💡 Dashboard content:</strong> Can pin a report page, a single visualisation from a report, or a text box. A dashboard is a curated view — not a full report.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ETL vs ELT -->
+  <div class="card">
+    <details>
+      <summary>🔄 ETL vs ELT</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th></th><th>ETL</th><th>ELT</th></tr>
+            <tr><td><strong>Order</strong></td><td>Extract → Transform → Load</td><td>Extract → Load → Transform</td></tr>
+            <tr><td><strong>Where transform</strong></td><td>Outside the target (staging area)</td><td>Inside the target (data warehouse / lake)</td></tr>
+            <tr><td><strong>Requirement</strong></td><td>Schema defined before loading (schema on write)</td><td>Schema applied on read (schema on read)</td></tr>
+            <tr><td><strong>Best for</strong></td><td>Relational warehouses, sensitive data</td><td>Data lakes, big data, Synapse</td></tr>
+          </table>
+        </div>
+        <div class="alert alert-trap">
+          <strong>⚠ TRAP:</strong> ETL requires "data that is fully processed BEFORE being loaded" — not a matching schema in source and target, and not that target must be relational.
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- EXAM TRAPS SUMMARY -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="domain-section" id="traps">
+  <div class="domain-header" style="border-color: var(--trap);">
+    <div class="domain-num" style="background: var(--trap);">⚠</div>
+    <h2>Top Exam Traps</h2>
+    <span class="weight" style="background: var(--trap);">Must know</span>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary style="color: var(--trap);">🎯 High-frequency Gotchas</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <tr><th>#</th><th>Question pattern</th><th>Wrong instinct</th><th>✅ Correct</th></tr>
+            <tr><td>1</td><td>Creating closed captions from audio</td><td>Descriptive</td><td><strong>Cognitive</strong> analytics</td></tr>
+            <tr><td>2</td><td>Relationships between network devices</td><td>Columnar</td><td><strong>Graph</strong> database</td></tr>
+            <tr><td>3</td><td>Key/value data in Cosmos DB</td><td>Cassandra API</td><td><strong>Table API</strong></td></tr>
+            <tr><td>4</td><td>ADF: Lookup activity type</td><td>Transformation</td><td><strong>Control</strong></td></tr>
+            <tr><td>5</td><td>ADF: Mapping data flow type</td><td>Control</td><td><strong>Data transformation</strong></td></tr>
+            <tr><td>6</td><td>ACID: "data changes logged and accounted"</td><td>Consistency</td><td><strong>Durability</strong></td></tr>
+            <tr><td>7</td><td>ACID: "processes see only consistent state"</td><td>Consistency</td><td><strong>Isolation</strong></td></tr>
+            <tr><td>8</td><td>Minimize maintenance + DB Mail + Service Broker</td><td>SQL Database elastic pool</td><td><strong>SQL Managed Instance</strong></td></tr>
+            <tr><td>9</td><td>SMB v3 protocol access</td><td>Blob Storage</td><td><strong>Azure Files</strong></td></tr>
+            <tr><td>10</td><td>Point where dimensions intersect</td><td>Aggregated measure</td><td><strong>A cube</strong></td></tr>
+            <tr><td>11</td><td>Azure Data Explorer language</td><td>SQL</td><td><strong>KQL</strong> (Kusto Query Language)</td></tr>
+            <tr><td>12</td><td>PaaS: who applies OS patches?</td><td>You</td><td><strong>Microsoft</strong></td></tr>
+            <tr><td>13</td><td>Reduce Azure SQL cost with existing licenses</td><td>Not possible</td><td><strong>Azure Hybrid Benefit</strong></td></tr>
+            <tr><td>14</td><td>GRANT / REVOKE statements</td><td>DML</td><td><strong>DCL</strong></td></tr>
+            <tr><td>15</td><td>DROP statement</td><td>DML</td><td><strong>DDL</strong></td></tr>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Quick fire tables -->
+  <div class="card">
+    <details>
+      <summary>🚀 Quick-Fire Reference Tables</summary>
+      <div class="card-body">
+        <p style="font-weight:700; margin: 10px 0 6px; font-size:0.85rem;">Cosmos DB APIs → Data models</p>
+        <div class="pills">
+          <span class="pill pill-d3">Gremlin → Graph</span>
+          <span class="pill pill-d3">MongoDB → JSON docs</span>
+          <span class="pill pill-d3">Table → Key/value</span>
+          <span class="pill pill-d3">Cassandra → Column-family</span>
+          <span class="pill pill-d3">NoSQL → JSON docs</span>
+        </div>
+
+        <p style="font-weight:700; margin: 16px 0 6px; font-size:0.85rem;">ADF Activities</p>
+        <div class="pills">
+          <span class="pill pill-d4">Copy → Data movement</span>
+          <span class="pill pill-d4">Mapping data flow → Transformation</span>
+          <span class="pill pill-d4">Lookup → Control ⚠</span>
+          <span class="pill pill-d4">ForEach → Control</span>
+          <span class="pill pill-d4">If Condition → Control</span>
+        </div>
+
+        <p style="font-weight:700; margin: 16px 0 6px; font-size:0.85rem;">SQL Categories</p>
+        <div class="pills">
+          <span class="pill pill-d2">SELECT → DML</span>
+          <span class="pill pill-d2">INSERT → DML</span>
+          <span class="pill pill-d2">UPDATE → DML</span>
+          <span class="pill pill-d2">DELETE → DML</span>
+          <span class="pill pill-d2">CREATE → DDL</span>
+          <span class="pill pill-d2">DROP → DDL</span>
+          <span class="pill pill-d2">ALTER → DDL</span>
+          <span class="pill pill-d2">GRANT → DCL ⚠</span>
+          <span class="pill pill-d2">REVOKE → DCL ⚠</span>
+        </div>
+
+        <p style="font-weight:700; margin: 16px 0 6px; font-size:0.85rem;">Analytics Languages</p>
+        <div class="pills">
+          <span class="pill pill-d4">ADX → KQL ⚠</span>
+          <span class="pill pill-d4">Stream Analytics → SQL</span>
+          <span class="pill pill-d4">Synapse → SQL</span>
+          <span class="pill pill-d4">Databricks → Python/Spark</span>
+        </div>
+
+        <p style="font-weight:700; margin: 16px 0 6px; font-size:0.85rem;">Azure Storage Protocols</p>
+        <div class="pills">
+          <span class="pill pill-d3">Blob → REST/HTTP</span>
+          <span class="pill pill-d3">Azure Files → SMB v3 ⚠</span>
+          <span class="pill pill-d3">Table Storage → REST/OData</span>
+          <span class="pill pill-d3">Queue → REST/HTTP</span>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+</div><!-- /main -->
+
+<div class="footer">
+  DP-900 Azure Data Fundamentals Cheat Sheet · Built from exam question bank analysis<br>
+  Exam: ~40–60 questions · Passing score: 700/1000 · All domains covered above
+</div>
+
+</body>
+</html>

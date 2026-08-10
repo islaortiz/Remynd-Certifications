@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PL-300 Cheat Sheet — Power BI Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbfbfd;
+    --panel:#ffffff;
+    --ink:#191a20;
+    --ink-soft:#565a67;
+    --line:#e4e5ea;
+    --prepare:#c98a1f;
+    --prepare-bg:#fdf3e0;
+    --model:#0f6e6a;
+    --model-bg:#e2f2f1;
+    --visualize:#5b4b8a;
+    --visualize-bg:#efeaf8;
+    --manage:#8c2f39;
+    --manage-bg:#faeaec;
+    --gold:#f2c811;
+    --ink-panel:#16171b;
+    --radius:14px;
+    --shadow: 0 1px 2px rgba(20,20,30,.04), 0 8px 24px rgba(20,20,30,.05);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; margin:0;}
+  code, .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+
+  /* ---- layout shell ---- */
+  .shell{display:grid; grid-template-columns:250px 1fr; min-height:100vh;}
+  @media (max-width:900px){ .shell{grid-template-columns:1fr;} .side{position:relative; height:auto;} }
+
+  .side{
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+    background:var(--ink-panel); color:#e9e9ee; padding:28px 20px;
+  }
+  .side .brand{display:flex; align-items:center; gap:9px; margin-bottom:26px;}
+  .side .brand .dot{width:11px;height:11px;border-radius:3px;background:var(--gold);}
+  .side .brand span{font-family:'Space Grotesk'; font-weight:700; font-size:15px; letter-spacing:.02em;}
+  .side .brand small{display:block; font-weight:400; font-size:10.5px; color:#9a9ba6; letter-spacing:.06em; text-transform:uppercase;}
+  .side nav a{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:9px 10px; margin-bottom:3px; border-radius:8px; text-decoration:none;
+    font-size:13.5px; color:#c6c7d1; font-weight:500; transition:background .15s;
+  }
+  .side nav a:hover{background:rgba(255,255,255,.06); color:#fff;}
+  .side nav a .sw{width:8px;height:8px;border-radius:50%; flex-shrink:0; margin-right:8px;}
+  .side nav a .pct{font-family:'JetBrains Mono'; font-size:11px; color:#8b8c98;}
+  .side .subs{margin:2px 0 14px 26px; padding-left:10px; border-left:1px solid rgba(255,255,255,.09);}
+  .side .subs a{font-size:12px; padding:5px 8px; color:#9a9ba6;}
+  .side .foot{margin-top:22px; padding-top:16px; border-top:1px solid rgba(255,255,255,.09); font-size:11.5px; color:#767786;}
+
+  .main{padding:0;}
+  .hero{
+    padding:52px 56px 34px; border-bottom:1px solid var(--line); background:var(--panel);
+  }
+  .hero .eyebrow{font-family:'JetBrains Mono'; font-size:12px; color:var(--ink-soft); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px;}
+  .hero h1{font-size:34px; margin-bottom:8px;}
+  .hero p{color:var(--ink-soft); font-size:15px; max-width:640px; margin:0 0 26px;}
+
+  .blueprint{display:flex; height:34px; border-radius:8px; overflow:hidden; box-shadow:var(--shadow);}
+  .blueprint .seg{display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; font-weight:600; font-family:'JetBrains Mono';}
+  .legend{display:flex; gap:22px; margin-top:14px; flex-wrap:wrap;}
+  .legend .item{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft);}
+  .legend .sw{width:10px;height:10px;border-radius:3px;}
+
+  section.domain{padding:44px 56px; border-bottom:1px solid var(--line);}
+  section.domain .dhead{display:flex; align-items:baseline; gap:14px; margin-bottom:6px; flex-wrap:wrap;}
+  section.domain h2{font-size:24px;}
+  .weight-badge{
+    font-family:'JetBrains Mono'; font-size:12.5px; font-weight:600; color:#fff;
+    padding:4px 10px; border-radius:20px;
+  }
+  section.domain .dsub{color:var(--ink-soft); font-size:14px; margin-bottom:26px; max-width:720px;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:16px; margin-bottom:22px;}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 20px; box-shadow:var(--shadow);
+  }
+  .card h4{font-size:14.5px; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .card h4 .ico{width:6px; height:6px; border-radius:50%; flex-shrink:0;}
+  .card ul{margin:0; padding-left:18px; font-size:13.3px; color:var(--ink);}
+  .card ul li{margin-bottom:6px;}
+  .card ul li:last-child{margin-bottom:0;}
+  .card p{font-size:13.3px; margin:0;}
+  .card .k{font-family:'JetBrains Mono'; font-weight:600; font-size:12.5px; padding:1px 6px; border-radius:5px; background:var(--bg); border:1px solid var(--line);}
+
+  table{width:100%; border-collapse:collapse; font-size:13px; background:var(--panel); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); margin-bottom:22px;}
+  thead th{
+    text-align:left; padding:10px 14px; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;
+    background:var(--ink-panel); color:#c6c7d1; font-weight:600;
+  }
+  tbody td{padding:10px 14px; border-top:1px solid var(--line); vertical-align:top;}
+  tbody tr:nth-child(even){background:#fafafc;}
+  tbody td code{background:var(--bg); border:1px solid var(--line); padding:1px 5px; border-radius:4px; font-size:12px;}
+
+  .callout{
+    border-radius:var(--radius); padding:16px 18px; margin-bottom:16px; font-size:13.3px;
+    border-left:4px solid; background:var(--panel); box-shadow:var(--shadow);
+  }
+  .callout .lbl{font-family:'JetBrains Mono'; font-size:11px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px; display:block;}
+  .callout.trap{border-color:#c0392b;}
+  .callout.trap .lbl{color:#c0392b;}
+  .callout.tip{border-color:var(--gold);}
+  .callout.tip .lbl{color:#9c7a06;}
+
+  .dax-ref{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-bottom:22px;}
+  .dax-item{background:var(--ink-panel); color:#e9e9ee; border-radius:10px; padding:13px 15px;}
+  .dax-item code.fn{font-family:'JetBrains Mono'; color:var(--gold); font-weight:600; font-size:13px;}
+  .dax-item p{font-size:12px; color:#b7b8c2; margin:6px 0 0;}
+
+  footer{padding:36px 56px 60px; color:var(--ink-soft); font-size:12.5px;}
+
+  @media print{
+    .side{display:none;}
+    .shell{grid-template-columns:1fr;}
+    section.domain{break-inside:avoid; padding:24px 10px;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="side">
+    <div class="brand"><div class="dot"></div><div><span>PL-300</span><small>Power BI Data Analyst</small></div></div>
+    <nav>
+      <a href="#prepare"><span><span class="sw" style="background:var(--prepare); display:inline-block;"></span>Prepare the data</span><span class="pct">25–30%</span></a>
+      <div class="subs">
+        <a href="#prepare-connect">Get / connect to data</a>
+        <a href="#prepare-clean">Profile &amp; clean data</a>
+        <a href="#prepare-transform">Transform &amp; load</a>
+      </div>
+      <a href="#model"><span><span class="sw" style="background:var(--model); display:inline-block;"></span>Model the data</span><span class="pct">25–30%</span></a>
+      <div class="subs">
+        <a href="#model-design">Design &amp; implement</a>
+        <a href="#model-dax">DAX calculations</a>
+        <a href="#model-perf">Optimize performance</a>
+      </div>
+      <a href="#visualize"><span><span class="sw" style="background:var(--visualize); display:inline-block;"></span>Visualize &amp; analyze</span><span class="pct">25–30%</span></a>
+      <div class="subs">
+        <a href="#viz-reports">Create reports</a>
+        <a href="#viz-enhance">Enhance for usability</a>
+        <a href="#viz-patterns">Identify patterns</a>
+      </div>
+      <a href="#manage"><span><span class="sw" style="background:var(--manage); display:inline-block;"></span>Manage &amp; secure</span><span class="pct">15–20%</span></a>
+      <div class="subs">
+        <a href="#manage-workspaces">Workspaces &amp; assets</a>
+        <a href="#manage-security">Security &amp; governance</a>
+      </div>
+    </nav>
+    <div class="foot">Skills measured as of <strong style="color:#c6c7d1;">April 20, 2026</strong>, per Microsoft Learn.<br><br>Built from the official study guide + recurring patterns across your 270-question practice bank.</div>
+  </aside>
+
+  <main class="main">
+
+    <div class="hero">
+      <div class="eyebrow">Exam PL-300 · Microsoft Certified: Power BI Data Analyst Associate</div>
+      <h1>PL-300 Cheat Sheet</h1>
+      <p>Organized by the four official skill domains and their current weightings, with the concepts, gotchas, and quick references that show up most often across your practice question bank layered in.</p>
+      <div class="blueprint">
+        <div class="seg" style="background:var(--prepare); flex:27.5;">Prepare 25–30%</div>
+        <div class="seg" style="background:var(--model); flex:27.5;">Model 25–30%</div>
+        <div class="seg" style="background:var(--visualize); flex:27.5;">Visualize 25–30%</div>
+        <div class="seg" style="background:var(--manage); flex:17.5;">Manage 15–20%</div>
+      </div>
+      <div class="legend">
+        <div class="item"><span class="sw" style="background:var(--prepare);"></span>Prepare the data</div>
+        <div class="item"><span class="sw" style="background:var(--model);"></span>Model the data</div>
+        <div class="item"><span class="sw" style="background:var(--visualize);"></span>Visualize &amp; analyze</div>
+        <div class="item"><span class="sw" style="background:var(--manage);"></span>Manage &amp; secure</div>
+      </div>
+    </div>
+
+    <!-- ============ PREPARE ============ -->
+    <section class="domain" id="prepare">
+      <div class="dhead">
+        <h2>1. Prepare the data</h2>
+        <span class="weight-badge" style="background:var(--prepare);">25–30%</span>
+      </div>
+      <p class="dsub">Connectors, storage modes, Power Query transformations, and data-quality cleanup. This is the domain your bank tests most (46 usable questions) — mostly Power Query mechanics.</p>
+
+      <h3 id="prepare-connect" style="font-size:16px; margin:0 0 12px;">Get or connect to data</h3>
+      <table>
+        <thead><tr><th>Storage mode</th><th>Data location</th><th>Refresh behavior</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Import</strong></td><td>Copied into the .pbix / semantic model</td><td>Manual or scheduled refresh</td><td>Fast visuals, full DAX support, small-to-medium data</td></tr>
+          <tr><td><strong>DirectQuery</strong></td><td>Stays in source; queried live</td><td>Always current, no refresh needed</td><td>Huge datasets, near-real-time needs, source-governed data</td></tr>
+          <tr><td><strong>Dual</strong></td><td>Acts as Import or DirectQuery depending on the query context</td><td>Mixed</td><td>Dimension tables in a composite model (avoids unnecessary DirectQuery hits)</td></tr>
+          <tr><td><strong>DirectLake</strong></td><td>Reads Delta/OneLake files directly, no import/copy step</td><td>Near-instant, no traditional refresh</td><td>Fabric/OneLake sources — import-level speed without the load</td></tr>
+          <tr><td><strong>Live Connection</strong></td><td>Report queries an existing published semantic model / AS model</td><td>Reflects the source model</td><td>Reusing an existing model without re-importing</td></tr>
+          <tr><td><strong>Push</strong></td><td>Data pushed into a Power BI dataset via API</td><td>Real-time streaming</td><td>Live dashboards fed by an external app/API</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout trap"><span class="lbl">Frequently tested trap</span>
+      A model mixing tables with different refresh cadences (e.g. one refreshed daily, another near real-time) needs <strong>different storage modes per table</strong> — usually a composite model with Dual for shared dimensions. "Minimize load time of visuals" almost always points away from pure DirectQuery.</div>
+
+      <div class="grid">
+        <div class="card">
+          <h4><span class="ico" style="background:var(--prepare);"></span>Common connectors</h4>
+          <ul>
+            <li>Power Apps data → always <span class="k">Dataverse</span>, not "Power Apps" itself</li>
+            <li>Existing Power BI model with reusable measures → connect to the <span class="k">Power BI dataset/semantic model</span>, not the raw source (minimizes dev effort)</li>
+            <li>Folder of identically-structured files (SharePoint or local) → <span class="k">Get Data → Folder</span>, then Combine &amp; Transform</li>
+            <li>Multiple identical databases to combine → separate queries, then <span class="k">Append</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--prepare);"></span>Parameters</h4>
+          <ul>
+            <li>Used to make a query dynamic (e.g. switch environments, filter values, file paths)</li>
+            <li>Data type must match how it's used (e.g. <span class="k">Text</span> for a folder path)</li>
+            <li>Can be exposed to report users if "Query used as parameter" is enabled</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 id="prepare-clean" style="font-size:16px; margin:24px 0 12px;">Profile and clean the data</h3>
+      <div class="grid">
+        <div class="card">
+          <h4><span class="ico" style="background:var(--prepare);"></span>Data profiling tools (Power Query)</h4>
+          <ul>
+            <li><strong>Column quality</strong> — % valid / error / empty</li>
+            <li><strong>Column distribution</strong> — distinct &amp; unique value counts</li>
+            <li><strong>Column profile</strong> — stats (min/max/avg/std dev) for the whole column</li>
+            <li>Enable via View tab; default only profiles the first 1,000 rows unless you switch to "profile entire dataset"</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--prepare);"></span>Fixing import errors</h4>
+          <ul>
+            <li>Errors from bad data type conversion → fix the <em>source column type</em>, don't just Replace Errors as a band-aid</li>
+            <li><span class="k">Replace Errors</span> lets you swap error values with a constant (e.g. 0)</li>
+            <li><span class="k">Remove Errors</span> drops the whole row — use only when those rows are truly junk</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 id="prepare-transform" style="font-size:16px; margin:24px 0 12px;">Transform and load the data</h3>
+      <table>
+        <thead><tr><th>Operation</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Merge queries</strong></td><td>Combine two tables <em>side-by-side</em> by matching key column(s) — adds columns. Choose join kind: Left Outer (keep all of left), Inner (only matches), Full Outer, etc.</td></tr>
+          <tr><td><strong>Append queries</strong></td><td>Stack tables with the same columns <em>on top of each other</em> — adds rows</td></tr>
+          <tr><td><strong>Group by</strong></td><td>Aggregate rows into summarized groups</td></tr>
+          <tr><td><strong>Pivot</strong></td><td>Turn row values into columns</td></tr>
+          <tr><td><strong>Unpivot</strong></td><td>Turn columns into rows (e.g. Jan/Feb/Mar columns → one "Month" column) — classic exam scenario</td></tr>
+          <tr><td><strong>Transpose</strong></td><td>Swap rows and columns entirely</td></tr>
+          <tr><td><strong>Reference query</strong></td><td>New query that points to another query's output without duplicating its steps — changes upstream propagate</td></tr>
+          <tr><td><strong>Duplicate query</strong></td><td>Independent copy — upstream changes do <em>not</em> propagate</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip"><span class="lbl">Recurring pattern</span>
+      "One row per customer with unpivoted city/region/country" or "combine Table1 + Table2 into one deduplicated column" → sequence is almost always <strong>import both → Append → Remove Duplicates</strong> (or Merge, if you need columns from a related table rather than combined rows).</div>
+
+      <div class="callout tip"><span class="lbl">Fuzzy matching</span>
+      Use <strong>Fuzzy Matching</strong> in a Merge when join keys are user-entered / unsanitized (typos, casing, extra spaces) — e.g. matching a web-form "Customer Name" against a clean master list.</div>
+    </section>
+
+    <!-- ============ MODEL ============ -->
+    <section class="domain" id="model">
+      <div class="dhead">
+        <h2>2. Model the data</h2>
+        <span class="weight-badge" style="background:var(--model);">25–30%</span>
+      </div>
+      <p class="dsub">Relationships, star schema design, and DAX. Fewer raw questions in your bank (32) but each tends to require deeper reasoning — this is where exam time gets eaten.</p>
+
+      <h3 id="model-design" style="font-size:16px; margin:0 0 12px;">Design and implement a data model</h3>
+      <div class="grid">
+        <div class="card">
+          <h4><span class="ico" style="background:var(--model);"></span>Star schema</h4>
+          <ul>
+            <li>One central <strong>fact table</strong> (transactions/events) + surrounding <strong>dimension tables</strong> (descriptive attributes)</li>
+            <li>Preferred over a single flat table or snowflake schema for performance and DAX simplicity</li>
+            <li>Relationships flow fact ← dimension, filtering from the "one" side to the "many" side</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--model);"></span>Cardinality &amp; cross-filter direction</h4>
+          <ul>
+            <li><strong>One-to-many</strong> is the default and safest choice for fact-to-dimension links</li>
+            <li><strong>Single</strong> cross-filter direction is the default; <strong>Both</strong> (bidirectional) can cause ambiguity and circular filtering in complex models — use sparingly</li>
+            <li><strong>Many-to-many</strong> needs a bridge table in most well-designed models</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--model);"></span>Role-playing dimensions</h4>
+          <ul>
+            <li>One dimension used multiple ways (e.g. one Date table for both OrderDate and ShipDate)</li>
+            <li>Handled with <strong>USERELATIONSHIP()</strong> in DAX, or by importing the dimension multiple times with distinct names</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--model);"></span>Date table</h4>
+          <ul>
+            <li>Should be a proper contiguous calendar table, marked as a <strong>Date Table</strong> in modeling settings</li>
+            <li>Required for time-intelligence DAX functions to behave correctly</li>
+            <li>Can be built with <strong>CALENDAR()</strong> / <strong>CALENDARAUTO()</strong> as a calculated table</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 id="model-dax" style="font-size:16px; margin:24px 0 12px;">Create model calculations by using DAX</h3>
+      <div class="dax-ref">
+        <div class="dax-item"><code class="fn">CALCULATE()</code><p>Changes the filter context of an expression — the core of most DAX measures</p></div>
+        <div class="dax-item"><code class="fn">SAMEPERIODLASTYEAR()</code><p>Time intelligence: shifts the current filter context back one year</p></div>
+        <div class="dax-item"><code class="fn">TOTALYTD / QTD / MTD</code><p>Running year/quarter/month-to-date totals</p></div>
+        <div class="dax-item"><code class="fn">DATEADD()</code><p>Shifts dates by any interval (day/month/quarter/year)</p></div>
+        <div class="dax-item"><code class="fn">USERELATIONSHIP()</code><p>Activates an inactive relationship for one calculation (role-playing dimensions)</p></div>
+        <div class="dax-item"><code class="fn">SUMX / AVERAGEX</code><p>Iterators — evaluate an expression row-by-row, then aggregate</p></div>
+        <div class="dax-item"><code class="fn">ALL() / ALLEXCEPT()</code><p>Remove filters (fully, or all-but-specified columns) — common in % of total measures</p></div>
+        <div class="dax-item"><code class="fn">RANKX()</code><p>Ranks values within a given context</p></div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h4><span class="ico" style="background:var(--model);"></span>Calculated column vs. measure vs. calculated table</h4>
+          <ul>
+            <li><strong>Calculated column</strong> — computed per row, stored in the model (uses RAM), usable as a slicer/axis field</li>
+            <li><strong>Measure</strong> — computed on the fly per query context, not stored, aggregation-aware</li>
+            <li><strong>Calculated table</strong> — new table generated entirely by a DAX expression (e.g. a Date table)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--model);"></span>Semi-additive measures</h4>
+          <ul>
+            <li>For values that shouldn't simply sum across time — e.g. account balances, headcount</li>
+            <li>Typically wrapped with <span class="k">LASTDATE</span> / <span class="k">FIRSTDATE</span> / <span class="k">CLOSINGBALANCE</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--model);"></span>Calculation groups</h4>
+          <ul>
+            <li>Reusable sets of DAX logic (e.g. Time Intelligence: YTD/PY/QTD as one group) applied across many measures</li>
+            <li>Avoids duplicating the same time-intelligence logic per measure</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 id="model-perf" style="font-size:16px; margin:24px 0 12px;">Optimize model performance</h3>
+      <div class="callout tip"><span class="lbl">Quick wins</span>
+      Remove unused columns/rows before anything else. Prefer <strong>numeric/integer keys</strong> over text for relationships. Reduce granularity when visual-level detail doesn't need row-level data. Use <strong>Performance Analyzer</strong> to isolate whether a slow visual is the DAX, the visual rendering, or the query itself; use <strong>DAX query view</strong> to test/profile measures directly.</div>
+    </section>
+
+    <!-- ============ VISUALIZE ============ -->
+    <section class="domain" id="visualize">
+      <div class="dhead">
+        <h2>3. Visualize and analyze the data</h2>
+        <span class="weight-badge" style="background:var(--visualize);">25–30%</span>
+      </div>
+      <p class="dsub">Report building, interactivity, storytelling features, and the built-in analytics tools. Your bank's largest usable pool (41 questions) — heavy on named features, so know what each one is called precisely.</p>
+
+      <h3 id="viz-reports" style="font-size:16px; margin:0 0 12px;">Create reports</h3>
+      <div class="grid">
+        <div class="card">
+          <h4><span class="ico" style="background:var(--visualize);"></span>Choosing a visual</h4>
+          <ul>
+            <li>Trend over time → line/area chart</li>
+            <li>Comparison across categories → bar/column chart</li>
+            <li>Part-to-whole → pie/donut/treemap (use sparingly, few categories)</li>
+            <li>Relationship between two measures → scatter chart</li>
+            <li>Single KPI vs. target → card, KPI visual, gauge</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--visualize);"></span>Copilot in reports</h4>
+          <ul>
+            <li>Can generate a <strong>narrative visual</strong> summarizing a page in text</li>
+            <li>Can suggest an entire new report page or content for one</li>
+            <li>Can summarize the underlying semantic model</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 id="viz-enhance" style="font-size:16px; margin:24px 0 12px;">Enhance reports for usability and storytelling</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Bookmark</strong></td><td>Captures the current state of a page (filters, visibility, slicer values) to jump back to — powers custom navigation and "story mode"</td></tr>
+          <tr><td><strong>Custom tooltip page</strong></td><td>A separate report page shown as a tooltip; must be built small, and marked <em>"Allow use as a tooltip"</em> in Page Information on the <strong>tooltip page itself</strong>, then set as the tooltip on the target visual</td></tr>
+          <tr><td><strong>Drillthrough</strong></td><td>Right-click a data point to jump to a filtered detail page; configured via the Drillthrough well on the target page</td></tr>
+          <tr><td><strong>Sync slicers</strong></td><td>Apply one slicer's selection across multiple pages via the Sync slicers pane</td></tr>
+          <tr><td><strong>Selection pane</strong></td><td>Group, layer, hide/show individual visual objects on a page</td></tr>
+          <tr><td><strong>Personalize visuals</strong></td><td>Lets report <em>consumers</em> (not just designers) swap visual types/fields at view time — must be enabled by the designer</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout trap"><span class="lbl">Frequently tested trap</span>
+      For a custom tooltip: the "Allow use as tooltip" toggle is set on the <strong>tooltip page</strong>, not the target page. Getting the two pages backwards is the most common wrong answer pattern in this topic.</div>
+
+      <h3 id="viz-patterns" style="font-size:16px; margin:24px 0 12px;">Identify patterns and trends</h3>
+      <div class="grid">
+        <div class="card">
+          <h4><span class="ico" style="background:var(--visualize);"></span>The "Analyze" feature</h4>
+          <ul>
+            <li>Right-click a data point → <strong>Analyze</strong> → "Explain the increase/decrease" for quick AI-driven explanations</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--visualize);"></span>AI visuals</h4>
+          <ul>
+            <li><strong>Key influencers</strong> — what drives a metric up or down</li>
+            <li><strong>Decomposition tree</strong> — drill into what's contributing to a value across dimensions, AI-suggested splits available</li>
+            <li><strong>Q&amp;A visual</strong> — natural-language querying of the model</li>
+            <li><strong>Smart narrative</strong> — auto-generated text summary</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--visualize);"></span>Other analytics</h4>
+          <ul>
+            <li>Grouping / binning / clustering for numeric or categorical simplification</li>
+            <li>Forecasting, reference lines, and error bars — added via the Analytics pane on line/scatter charts</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MANAGE ============ -->
+    <section class="domain" id="manage">
+      <div class="dhead">
+        <h2>4. Manage and secure Power BI</h2>
+        <span class="weight-badge" style="background:var(--manage);">15–20%</span>
+      </div>
+      <p class="dsub">Smallest official weight, but don't skip it — RLS and gateways alone show up in ~35 of your practice questions, more than almost any other single topic.</p>
+
+      <h3 id="manage-workspaces" style="font-size:16px; margin:0 0 12px;">Create and manage workspaces and assets</h3>
+      <table>
+        <thead><tr><th>Workspace role</th><th>Can do</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Admin</strong></td><td>Everything, including managing workspace access/roles and deleting the workspace</td></tr>
+          <tr><td><strong>Member</strong></td><td>Publish, edit, and share content; manage most content settings (not workspace-level access)</td></tr>
+          <tr><td><strong>Contributor</strong></td><td>Edit and publish content, but can't share it with others</td></tr>
+          <tr><td><strong>Viewer</strong></td><td>Read-only access to content</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid">
+        <div class="card">
+          <h4><span class="ico" style="background:var(--manage);"></span>Gateways</h4>
+          <ul>
+            <li>Required whenever a scheduled refresh needs to reach an <strong>on-premises</strong> data source</li>
+            <li>Not required for purely cloud sources (Azure SQL, SharePoint Online, etc.)</li>
+            <li>Setup order: install gateway → add data source to it → map the semantic model to that data source → assign dataset owner/credentials</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--manage);"></span>Refresh types</h4>
+          <ul>
+            <li><strong>Scheduled refresh</strong> — full reload on a timer (up to 8x/day on Pro)</li>
+            <li><strong>Incremental refresh</strong> — only reloads recent partitions; needed for very large fact tables to stay within refresh time limits</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--manage);"></span>Distribution</h4>
+          <ul>
+            <li><strong>App</strong> — packaged, curated way to distribute a workspace's content broadly</li>
+            <li><strong>Subscriptions</strong> — scheduled email snapshots of a report/dashboard to yourself or others</li>
+            <li><strong>Data alerts</strong> — notify when a card/KPI crosses a threshold (dashboards only)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 id="manage-security" style="font-size:16px; margin:24px 0 12px;">Secure and govern Power BI items</h3>
+      <div class="callout trap"><span class="lbl">Frequently tested — Row-Level Security</span>
+      RLS sequence: <strong>(1)</strong> define role(s) and DAX filter expressions in Power BI Desktop → <strong>(2)</strong> publish the report → <strong>(3)</strong> in the Service, open Security for the semantic model → <strong>(4)</strong> assign members/security groups to each role. Static RLS hardcodes a value per role; <strong>dynamic RLS</strong> uses <code>USERNAME()</code>/<code>USERPRINCIPALNAME()</code> against a table so one role definition works for many users.</div>
+
+      <div class="grid">
+        <div class="card">
+          <h4><span class="ico" style="background:var(--manage);"></span>Access levels</h4>
+          <ul>
+            <li><strong>Workspace role</strong> — access to everything in the workspace</li>
+            <li><strong>Item-level access</strong> — share a single report/dashboard without full workspace access</li>
+            <li><strong>Semantic model access ("Build" permission)</strong> — lets someone build new reports on top of your model without opening it directly</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ico" style="background:var(--manage);"></span>Sensitivity labels</h4>
+          <ul>
+            <li>Classify and protect content (e.g. Confidential, Public); can restrict export and encrypt on download</li>
+            <li>Can inherit from the source data or be applied manually in the Service/Desktop</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Built for personal exam prep · domain weightings and skill bullets sourced from the official Microsoft Learn PL-300 study guide (skills measured as of April 20, 2026) · supplemented with recurring patterns from your uploaded practice question bank.
+    </footer>
+
+  </main>
+</div>
+</body>
+</html>
