@@ -37,4 +37,4 @@ Passed a certification? Add your material — see [CONTRIBUTING.md](CONTRIBUTING
 ## Publishing on GitHub Pages
 
 Repo **Settings → Pages → Source: `main` / root**. Site goes live at
-`https://<org-or-user>.github.io/<repo>/`.
+`https://apuigb.github.io/Remynd-Certifications/`.
