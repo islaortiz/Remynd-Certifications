@@ -6,20 +6,20 @@
 <title>DP-900 Cheat Sheet | Azure Data Fundamentals</title>
 <style>
   :root {
-    --bg: #F0F5FF;
+    --bg: #F6F4EE;
     --card: #FFFFFF;
-    --text: #1B2040;
-    --muted: #5A6A8A;
-    --border: #D6E3FF;
-    --d1: #0078D4;
-    --d2: #107C41;
-    --d3: #5C2D91;
-    --d4: #CA5010;
-    --trap: #D13438;
-    --tip: #0078D4;
-    --yes: #107C41;
-    --no: #D13438;
-    --warn: #B7700F;
+    --text: #0A3435;
+    --muted: #3D5A5B;
+    --border: #DFE3DD;
+    --d1: #1C6466;
+    --d2: #2F7D53;
+    --d3: #4F7D5B;
+    --d4: #9C4A2F;
+    --trap: #B5342C;
+    --tip: #1C6466;
+    --yes: #2F7D53;
+    --no: #B5342C;
+    --warn: #B7862F;
     --shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
@@ -35,13 +35,13 @@
 
   /* ── HEADER ── */
   .header {
-    background: linear-gradient(135deg, #0A1628 0%, #0F2D5E 100%);
+    background: linear-gradient(135deg, #0A3435 0%, #12494A 100%);
     color: white;
     padding: 28px 20px 24px;
     text-align: center;
   }
   .header h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.5px; }
-  .header p { color: #90AFDD; font-size: 0.88rem; margin-top: 4px; }
+  .header p { color: #7FB7A6; font-size: 0.88rem; margin-top: 4px; }
 
   .domain-badges {
     display: flex; flex-wrap: wrap; gap: 8px;
@@ -127,12 +127,12 @@
   .table-wrap { overflow-x: auto; margin-top: 10px; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   th {
-    background: #1B2040; color: white;
+    background: #0A3435; color: white;
     padding: 8px 10px; text-align: left; font-weight: 600;
   }
   td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
   tr:last-child td { border-bottom: none; }
-  tr:nth-child(even) td { background: #F8FBFF; }
+  tr:nth-child(even) td { background: #FFFFFF; }
 
   /* ── TAGS ── */
   .tag {
@@ -141,7 +141,7 @@
     margin: 1px;
   }
   .tag-trap { background: #FFE5E5; color: var(--trap); }
-  .tag-tip  { background: #E3F0FF; color: var(--tip); }
+  .tag-tip  { background: #DFECEB; color: var(--tip); }
   .tag-yes  { background: #E3F4EA; color: var(--yes); }
   .tag-no   { background: #FFE5E5; color: var(--no); }
   .tag-warn { background: #FFF4E0; color: var(--warn); }
@@ -152,9 +152,9 @@
     padding: 4px 12px; border-radius: 14px; font-size: 0.8rem;
     font-weight: 600; border: 2px solid;
   }
-  .pill-d1 { color: var(--d1); border-color: var(--d1); background: #E3F0FF; }
+  .pill-d1 { color: var(--d1); border-color: var(--d1); background: #DFECEB; }
   .pill-d2 { color: var(--d2); border-color: var(--d2); background: #E5F4EB; }
-  .pill-d3 { color: var(--d3); border-color: var(--d3); background: #EDE5F7; }
+  .pill-d3 { color: var(--d3); border-color: var(--d3); background: #E4EDE6; }
   .pill-d4 { color: var(--d4); border-color: var(--d4); background: #FCEADE; }
 
   /* ── ALERT BOXES ── */
@@ -164,16 +164,16 @@
     border-left: 4px solid;
   }
   .alert-trap { background: #FFF0F0; border-color: var(--trap); }
-  .alert-tip  { background: #EEF5FF; border-color: var(--tip); }
+  .alert-tip  { background: #EAF0EC; border-color: var(--tip); }
   .alert strong { font-weight: 700; }
 
   /* ── MNEMONIC ── */
   .mnemonic {
-    background: linear-gradient(135deg, #0F2D5E, #1B2040);
+    background: linear-gradient(135deg, #12494A, #0A3435);
     color: white; border-radius: 8px; padding: 12px 14px;
     font-size: 0.83rem; margin-top: 10px;
   }
-  .mnemonic strong { color: #90CFFF; }
+  .mnemonic strong { color: #7FB7A6; }
 
   /* ── YES/NO INLINE ── */
   .yn-yes { color: var(--yes); font-weight: 700; }
@@ -191,6 +191,30 @@
     .sticky-nav a { padding: 10px 10px; font-size: 0.75rem; }
     th, td { padding: 6px 8px; font-size: 0.8rem; }
   }
+</style>
+<style id="remynd-theme">
+/* ===== Remynd unified theme (Tier A recolor) — overrides file :root ===== */
+:root{
+  /* surfaces */
+  --bg:#f6f4ee; --panel:#ffffff; --card:#ffffff;
+  /* text */
+  --ink:#0a3435; --text:#0a3435; --ink-soft:#3d5a5b; --muted:#3d5a5b;
+  /* lines / dark panel */
+  --line:#dfe3dd; --border:#dfe3dd; --ink-panel:#0a3435;
+  /* domain accent ramp: teal / sage / ochre / clay */
+  --model:#1c6466;   --model-bg:#dfeceb;
+  --visualize:#4f7d5b; --visualize-bg:#e4ede6;
+  --prepare:#b7862f; --prepare-bg:#f6efdd;
+  --manage:#9c4a2f;  --manage-bg:#f3e5df;
+  --d1:#1c6466; --d2:#4f7d5b; --d3:#b7862f; --d4:#9c4a2f;
+  /* highlight + status */
+  --gold:#c99a2e;
+  --good:#2f7d53; --yes:#2f7d53; --tip:#1c6466;
+  --bad:#b5342c;  --no:#b5342c;  --trap:#b5342c; --warn:#b7862f;
+  /* shape */
+  --radius:14px;
+  --shadow:0 1px 2px rgba(10,52,53,.05), 0 8px 24px rgba(10,52,53,.06);
+}
 </style>
 </head>
 <body>

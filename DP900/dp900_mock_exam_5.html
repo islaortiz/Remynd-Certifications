@@ -6,17 +6,17 @@
 <title>DP-900 Mock Exam</title>
 <style>
   :root {
-    --bg: #F0F5FF;
+    --bg: #F6F4EE;
     --card: #FFFFFF;
-    --text: #1B2040;
-    --muted: #5A6A8A;
-    --border: #D6E3FF;
-    --d1: #0078D4;
-    --d2: #107C41;
-    --d3: #5C2D91;
-    --d4: #CA5010;
-    --yes: #107C41;
-    --no: #D13438;
+    --text: #0A3435;
+    --muted: #3D5A5B;
+    --border: #DFE3DD;
+    --d1: #1C6466;
+    --d2: #2F7D53;
+    --d3: #4F7D5B;
+    --d4: #9C4A2F;
+    --yes: #2F7D53;
+    --no: #B5342C;
     --shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,13 +29,13 @@
     padding-bottom: 110px;
   }
   .header {
-    background: linear-gradient(135deg, #0A1628 0%, #0F2D5E 100%);
+    background: linear-gradient(135deg, #0A3435 0%, #12494A 100%);
     color: white;
     padding: 28px 20px 22px;
     text-align: center;
   }
   .header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
-  .header p { color: #90AFDD; font-size: 0.88rem; margin-top: 6px; }
+  .header p { color: #7FB7A6; font-size: 0.88rem; margin-top: 6px; }
   .domain-badges {
     display: flex; flex-wrap: wrap; gap: 8px;
     justify-content: center; margin-top: 16px;
@@ -103,9 +103,9 @@
     padding: 10px 12px; border-radius: 9px; border: 1.5px solid var(--border);
     cursor: pointer; font-size: 0.92rem; transition: border-color .12s, background .12s;
   }
-  .option:hover { border-color: #A9C6FF; background: #F6F9FF; }
-  .option input { accent-color: #0078D4; width: 16px; height: 16px; flex-shrink: 0; }
-  .option.selected { border-color: #0078D4; background: #EAF3FF; }
+  .option:hover { border-color: #7FB7A6; background: #FFFFFF; }
+  .option input { accent-color: #1C6466; width: 16px; height: 16px; flex-shrink: 0; }
+  .option.selected { border-color: #1C6466; background: #E4EDE6; }
 
   .option.correct-answer { border-color: var(--yes); background: #E9F7EF; }
   .option.wrong-answer { border-color: var(--no); background: #FCEAEA; }
@@ -126,15 +126,39 @@
   .progressWrap { flex: 1; }
   .progressText { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
   .progressBar { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
-  .progressFill { height: 100%; background: linear-gradient(90deg,#0078D4,#5C2D91); width:0%; transition: width .2s; }
+  .progressFill { height: 100%; background: linear-gradient(90deg,#1C6466,#4F7D5B); width:0%; transition: width .2s; }
   .btn {
-    background: linear-gradient(135deg,#0078D4,#0A1628);
+    background: linear-gradient(135deg,#1C6466,#0A3435);
     color: white; border: none; padding: 12px 22px; border-radius: 10px;
     font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap;
   }
   .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
   .warnMsg { color: var(--no); font-size: 0.82rem; font-weight: 600; margin-top: 6px; display:none; }
+</style>
+<style id="remynd-theme">
+/* ===== Remynd unified theme (Tier A recolor) — overrides file :root ===== */
+:root{
+  /* surfaces */
+  --bg:#f6f4ee; --panel:#ffffff; --card:#ffffff;
+  /* text */
+  --ink:#0a3435; --text:#0a3435; --ink-soft:#3d5a5b; --muted:#3d5a5b;
+  /* lines / dark panel */
+  --line:#dfe3dd; --border:#dfe3dd; --ink-panel:#0a3435;
+  /* domain accent ramp: teal / sage / ochre / clay */
+  --model:#1c6466;   --model-bg:#dfeceb;
+  --visualize:#4f7d5b; --visualize-bg:#e4ede6;
+  --prepare:#b7862f; --prepare-bg:#f6efdd;
+  --manage:#9c4a2f;  --manage-bg:#f3e5df;
+  --d1:#1c6466; --d2:#4f7d5b; --d3:#b7862f; --d4:#9c4a2f;
+  /* highlight + status */
+  --gold:#c99a2e;
+  --good:#2f7d53; --yes:#2f7d53; --tip:#1c6466;
+  --bad:#b5342c;  --no:#b5342c;  --trap:#b5342c; --warn:#b7862f;
+  /* shape */
+  --radius:14px;
+  --shadow:0 1px 2px rgba(10,52,53,.05), 0 8px 24px rgba(10,52,53,.06);
+}
 </style>
 </head>
 <body>

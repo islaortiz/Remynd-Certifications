@@ -9,21 +9,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#fbfbfd;
+    --bg:#F6F4EE;
     --panel:#ffffff;
-    --ink:#191a20;
+    --ink:#0A3435;
     --ink-soft:#565a67;
     --line:#e4e5ea;
-    --prepare:#c98a1f;
-    --prepare-bg:#fdf3e0;
-    --model:#0f6e6a;
-    --model-bg:#e2f2f1;
-    --visualize:#5b4b8a;
-    --visualize-bg:#efeaf8;
-    --manage:#8c2f39;
-    --manage-bg:#faeaec;
-    --gold:#f2c811;
-    --ink-panel:#16171b;
+    --prepare:#B7862F;
+    --prepare-bg:#F6EFDD;
+    --model:#1C6466;
+    --model-bg:#DFECEB;
+    --visualize:#4F7D5B;
+    --visualize-bg:#E4EDE6;
+    --manage:#9C4A2F;
+    --manage-bg:#F3E5DF;
+    --gold:#C99A2E;
+    --ink-panel:#0A3435;
     --radius:14px;
     --shadow: 0 1px 2px rgba(20,20,30,.04), 0 8px 24px rgba(20,20,30,.05);
   }
@@ -112,8 +112,8 @@
     border-left:4px solid; background:var(--panel); box-shadow:var(--shadow);
   }
   .callout .lbl{font-family:'JetBrains Mono'; font-size:11px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px; display:block;}
-  .callout.trap{border-color:#c0392b;}
-  .callout.trap .lbl{color:#c0392b;}
+  .callout.trap{border-color:#B5342C;}
+  .callout.trap .lbl{color:#B5342C;}
   .callout.tip{border-color:var(--gold);}
   .callout.tip .lbl{color:#9c7a06;}
 
@@ -129,6 +129,30 @@
     .shell{grid-template-columns:1fr;}
     section.domain{break-inside:avoid; padding:24px 10px;}
   }
+</style>
+<style id="remynd-theme">
+/* ===== Remynd unified theme (Tier A recolor) — overrides file :root ===== */
+:root{
+  /* surfaces */
+  --bg:#f6f4ee; --panel:#ffffff; --card:#ffffff;
+  /* text */
+  --ink:#0a3435; --text:#0a3435; --ink-soft:#3d5a5b; --muted:#3d5a5b;
+  /* lines / dark panel */
+  --line:#dfe3dd; --border:#dfe3dd; --ink-panel:#0a3435;
+  /* domain accent ramp: teal / sage / ochre / clay */
+  --model:#1c6466;   --model-bg:#dfeceb;
+  --visualize:#4f7d5b; --visualize-bg:#e4ede6;
+  --prepare:#b7862f; --prepare-bg:#f6efdd;
+  --manage:#9c4a2f;  --manage-bg:#f3e5df;
+  --d1:#1c6466; --d2:#4f7d5b; --d3:#b7862f; --d4:#9c4a2f;
+  /* highlight + status */
+  --gold:#c99a2e;
+  --good:#2f7d53; --yes:#2f7d53; --tip:#1c6466;
+  --bad:#b5342c;  --no:#b5342c;  --trap:#b5342c; --warn:#b7862f;
+  /* shape */
+  --radius:14px;
+  --shadow:0 1px 2px rgba(10,52,53,.05), 0 8px 24px rgba(10,52,53,.06);
+}
 </style>
 </head>
 <body>
